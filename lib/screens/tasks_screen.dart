@@ -1,6 +1,6 @@
-import 'package:bloc_todo/blocs/bloc/tasks_bloc.dart';
-import 'package:bloc_todo/blocs/bloc/tasks_event.dart';
-import 'package:bloc_todo/blocs/bloc/tasks_state.dart';
+import '../blocs/bloc_exports.dart';
+
+import 'package:bloc_todo/screens/app_drawer.dart';
 import 'package:bloc_todo/widgets/tasks_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,8 @@ import '../models/task.dart';
 import 'add_task_screen.dart';
 
 class TasksScreen extends StatelessWidget {
-  TasksScreen({super.key});
+  const TasksScreen({super.key});
+  static const id = 'tasks_screen';
 
   void _addTask(BuildContext context) {
     showModalBottomSheet(
@@ -29,7 +30,7 @@ class TasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
-        List<Task> tasksList = state.allTasks;
+        List<Task> tasksList = state.pendingTasks;
         return Scaffold(
           appBar: AppBar(
             title: Text('Tasks App'),
@@ -38,11 +39,12 @@ class TasksScreen extends StatelessWidget {
                   onPressed: () => _addTask(context), icon: Icon(Icons.add))
             ],
           ),
+          drawer: const AppDrawer(),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Center(
-                child: Chip(label: Text('${state.allTasks.length} Tasks')),
+                child: Chip(label: Text('${state.pendingTasks.length} Tasks')),
               ),
               TasksList(
                 tasks: tasksList,

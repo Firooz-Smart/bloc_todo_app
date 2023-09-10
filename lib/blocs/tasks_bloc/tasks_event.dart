@@ -32,3 +32,11 @@ class DeleteTask extends TaskEvent {
   // TODO: implement props
   List<Object?> get props => [task];
 }
+
+class RemoveTask extends TaskEvent {
+  final Task task;
+  const RemoveTask({required this.task});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [task];
+}

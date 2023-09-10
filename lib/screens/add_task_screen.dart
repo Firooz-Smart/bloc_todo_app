@@ -3,10 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import '../blocs/bloc_exports.dart';
 import '../models/task.dart';
+import '../blocs/bloc_exports.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({super.key});
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen({super.key});
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
   final TextEditingController txtTitle = TextEditingController();
+
+  final TextEditingController txtDescription = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +38,19 @@ class AddTaskScreen extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
+          TextField(
+            controller: txtDescription,
+            autofocus: true,
+            decoration: InputDecoration(
+              label: Text('Description'),
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 2,
+            maxLength: 100,
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -38,11 +60,18 @@ class AddTaskScreen extends StatelessWidget {
               ElevatedButton(
                   onPressed: () {
                     if (txtTitle.text.isNotEmpty) {
-                      context.read<TasksBloc>().add(AddTask(
-                          task: Task(
-                              id: const Uuid().v4(), title: txtTitle.text)));
+                      context.read<TasksBloc>().add(
+                            AddTask(
+                              task: Task(
+                                  id: const Uuid().v4(),
+                                  title: txtTitle.text,
+                                  description: txtDescription.text),
+                            ),
+                          );
                       txtTitle.clear();
-                      Navigator.of(context).pop();
+                      txtDescription.clear();
+                      print('added');
+                      Navigator.pop(context);
                     }
                   },
                   child: Text('Add')),
