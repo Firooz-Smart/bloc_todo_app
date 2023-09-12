@@ -52,11 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text(pages[selectedIndex]['pageTitle']),
-            actions: [
-              IconButton(
-                  onPressed: () => _addTask(context),
-                  icon: const Icon(Icons.add))
-            ],
+            actions: selectedIndex == 0
+                ? [
+                    IconButton(
+                        onPressed: () => _addTask(context),
+                        icon: const Icon(Icons.add))
+                  ]
+                : null,
           ),
           drawer: const AppDrawer(),
           body: pages[selectedIndex]['pageName'],

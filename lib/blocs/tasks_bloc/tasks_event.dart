@@ -40,3 +40,35 @@ class RemoveTask extends TaskEvent {
   // TODO: implement props
   List<Object?> get props => [task];
 }
+
+class MarkFavoriteOrUnFavoriteTask extends TaskEvent {
+  final Task task;
+  const MarkFavoriteOrUnFavoriteTask({required this.task});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [task];
+}
+
+class EditTask extends TaskEvent {
+  final Task newTask;
+  final Task oldTask;
+  const EditTask({required this.newTask, required this.oldTask});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [newTask, oldTask];
+}
+
+class RestoreTask extends TaskEvent {
+  final Task task;
+  const RestoreTask({required this.task});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [task];
+}
+
+class DeleteAllTasks extends TaskEvent {
+  const DeleteAllTasks();
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}

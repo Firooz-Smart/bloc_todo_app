@@ -5,17 +5,25 @@ import '../blocs/bloc_exports.dart';
 import '../models/task.dart';
 import '../blocs/bloc_exports.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+class EditTaskScreen extends StatefulWidget {
+  final Task oldTask;
+  const EditTaskScreen({super.key, required this.oldTask});
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<EditTaskScreen> createState() => _EditTaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  final TextEditingController txtTitle = TextEditingController();
+class _EditTaskScreenState extends State<EditTaskScreen> {
+  late TextEditingController txtTitle;
+  late TextEditingController txtDescription;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  final TextEditingController txtDescription = TextEditingController();
+    txtTitle = TextEditingController(text: widget.oldTask.title);
+    txtDescription = TextEditingController(text: widget.oldTask.description);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +31,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const Text('Add Task'),
+          const Text('Edit Task'),
           SizedBox(
             height: 10,
           ),
@@ -61,21 +69,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   onPressed: () {
                     if (txtTitle.text.isNotEmpty) {
                       context.read<TasksBloc>().add(
-                            AddTask(
-                              task: Task(
-                                  id: const Uuid().v4(),
-                                  title: txtTitle.text,
-                                  description: txtDescription.text,
-                                  date: DateTime.now().toString()),
-                            ),
+                            EditTask(
+                                newTask: widget.oldTask.copyWith(
+                                    title: txtTitle.text,
+                                    description: txtDescription.text,
+                                    isDone: false,
+                                    date: DateTime.now().toString()),
+                                oldTask: widget.oldTask),
                           );
                       txtTitle.clear();
                       txtDescription.clear();
-                      print('added');
                       Navigator.pop(context);
                     }
                   },
-                  child: Text('Add')),
+                  child: const Text('Save')),
             ],
           )
         ],
